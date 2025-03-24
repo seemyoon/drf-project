@@ -56,7 +56,7 @@ class UserListCreateView(APIView):  # create users list
         # return Response(response, status.HTTP_201_CREATED)  # we can add only json-like formate
 
         # 2 way to save data in db. without serializer (but we added method create in serializers.py)
-        serializer.save()
+        serializer.save() # If there is a create() method in the serializer, it is called.
         return Response(serializer.data, status.HTTP_201_CREATED)
 
 
