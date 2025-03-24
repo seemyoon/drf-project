@@ -1,29 +1,25 @@
-from rest_framework import status
+from rest_framework.generics import GenericAPIView
+from rest_framework.mixins import ListModelMixin, CreateModelMixin, RetrieveModelMixin, UpdateModelMixin, \
+    DestroyModelMixin
 from rest_framework.request import Request
-from rest_framework.response import Response
-from rest_framework.views import APIView
 
 from apps.users.filter import filter_users
 from apps.users.models import UserModel
 from apps.users.serializers import UserSerializer
 
 
-class UserListCreateView(APIView):
-    """"
-    APIView
-    - Base class for views in DRF.
-    requires explicit definition of methods (get, post, put, delete, etc.).
-    does not include built-in logic for working with models.
+class UserListCreateView(GenericAPIView, ListModelMixin,
+                         CreateModelMixin):  # GenericAPIView inherit from APIView, but have more functionality
+    # we can delete queryset = UserModel.objects.all(), because we specified in filter.py file
+    serializer_class = UserSerializer
 
-    GenericAPIView. GenericAPIView inherit from APIView
-    with it, we can do our code shorter
-    inherits from APIView, but adds support for working with models.
-    allows the use of queryset, serializer_class, pagination, and filtering.
-    more often used as a basis for generic classes (ListAPIView, RetrieveAPIView, etc.).
-    """
+    def get_queryset(self):  # give ability to specified queryset
+        # return super().get_queryset() # we don't use it
+        request: Request = self.request
+        return filter_users(request.query_params)
 
     def get(self, request: Request, *args,
-            **kwargs):  # we indicate request: Request, because it's necessary to catch info query_params. request is the same request as in self, use when only self doesn't work
+            **kwargs):
         """"
         description
         1. about objects.all()
@@ -71,53 +67,60 @@ class UserListCreateView(APIView):
         annotate = UserModel.objects.values('name').annotate(count=Count('name'))
         """
 
-        qs = filter_users(request.query_params)
-        serializer = UserSerializer(qs, many=True)
-        return Response(serializer.data, status=status.HTTP_200_OK)
+        return super().list(request, *args, **kwargs)
 
-    def post(self, *args, **kwargs):
-        data = self.request.data
-        serializer = UserSerializer(
-            data=data)
-        serializer.is_valid(raise_exception=True)
-        serializer.save()
-        return Response(serializer.data, status.HTTP_201_CREATED)
+    def post(self, request: Request, *args, **kwargs):
+        return super().list(request, *args, **kwargs)
 
 
-class UserRetrieveUpdateDestroyView(APIView):
-    def get(self, *args, **kwargs):
-        pk = kwargs['pk']
-        try:
-            user = UserModel.objects.get(pk=pk)
+class UserRetrieveUpdateDestroyView(GenericAPIView, RetrieveModelMixin, UpdateModelMixin, DestroyModelMixin):
+    qs = UserModel.objects.all()  # it's necessary for GenericAPIView. we need to specify qs
+    serializer_class = UserModel.objects.all()
 
-        except UserModel.DoesNotExist:
-            return Response(f'User {pk} does not exist', status.HTTP_404_NOT_FOUND)
-        serializer = UserSerializer(user)
-        return Response(serializer.data, status.HTTP_200_OK)
+    # def get(self, *args, **kwargs):
+    #     # we use GenericAPIView we may not avoid the following code:
+    #     # pk = kwargs['pk']
+    #     # try:
+    #     #     user = UserModel.objects.get(pk=pk)
+    #     #
+    #     # except UserModel.DoesNotExist:
+    #     #     return Response(f'User {pk} does not exist', status.HTTP_404_NOT_FOUND)
+    #     # modified version:
+    #     user = self.get_object()
 
-    def put(self, *args, **kwargs):
-        pk = kwargs['pk']
+    #     serializer = UserSerializer(user)
+    #     return Response(serializer.data, status.HTTP_200_OK)
 
-        try:
-            user = UserModel.objects.get(pk=pk)
+    # def put(self, *args, **kwargs):
+    #     # the same situation as in get method
+    #     user = self.get_object()
 
-        except UserModel.DoesNotExist:
-            return Response(f'User {pk} does not exist', status.HTTP_404_NOT_FOUND)
+    #     data = self.request.data
 
-        data = self.request.data
+    # serializer = UserSerializer(user, data, partial=True) # partial=True is mean not all fields must be changed
+    #     serializer.is_valid(raise_exception=True)
 
-        serializer = UserSerializer(user, data)
-        serializer.is_valid(raise_exception=True)
+    #     serializer.save()
 
-        serializer.save()
+    #     return Response(serializer.data, status.HTTP_200_OK)
 
-        return Response(serializer.data, status.HTTP_200_OK)
+    # def delete(self, *args, **kwargs):
+    #     # the same situation as in get method
+    #     self.get_object().delete()
 
-    def delete(self, *args, **kwargs):
-        pk = kwargs['pk']
+    #     return Response(status.HTTP_204_NO_CONTENT)
 
-        try:
-            UserModel.objects.get(pk=pk).delete()
-        except UserModel.DoesNotExist:
-            return Response(f" User {pk} does not exist", status.HTTP_404_NOT_FOUND)
-        return Response(status.HTTP_204_NO_CONTENT)
+    def get(self, request: Request, *args, **kwargs):  # kwargs = {'pk': 5}
+        return super().retrieve(request, *args, **kwargs)
+
+    def put(self, request: Request, *args, **kwargs):
+        return super().update(request, *args, **kwargs)
+
+    def delete(self, request: Request, *args, **kwargs):
+        return super().destroy(request, *args, **kwargs)
+
+    def patch(self, request: Request, *args,
+              **kwargs):  # METHOD PATCH as partial=True is mean not all fields must be changed.
+        # WITH PUT WE NEED TO MODIFY ALL FIELDS
+        return super().partial_update(request, *args, **kwargs)
+
