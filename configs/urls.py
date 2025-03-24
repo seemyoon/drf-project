@@ -1,11 +1,5 @@
-"""
-URL configuration for configs project.
-"""
-from django.urls import path
-from users.views import UserListCreateView, UserRetrieveUpdateDestroyView
+from django.urls import path, include
 
 urlpatterns = [
-    path('users', UserListCreateView.as_view()),
-
-    path('users/<int:pk>', UserRetrieveUpdateDestroyView.as_view())
-]  # list of URL routes.
+    path('users', include('apps.users.urls')),  # specify include to designate path to particular path
+]

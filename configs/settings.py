@@ -25,7 +25,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
 
     # my_apps - usually named as like that
-    'users',  # myapp was without db, and we didn't set it
+    'apps.users',  # myapp was without db, and we didn't set it
 
 ]
 
