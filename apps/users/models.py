@@ -1,5 +1,9 @@
 from django.db import models
+
 from core.models import BaseModel
+
+from apps.orders.models import OrderModel
+
 
 class UserModel(BaseModel): # inherit from BaseModel
     class Meta:  # addition
@@ -11,3 +15,10 @@ class UserModel(BaseModel): # inherit from BaseModel
     age = models.IntegerField()
     status = models.BooleanField(default=False)
     weight = models.FloatField()
+    orders =models.ForeignKey(OrderModel, on_delete=models.CASCADE, related_name='users')
+    # ForeignKey - This means that the current model will have a many-to-one relationship with OrderModel.
+    # related_name='users' - This means that OrderModel will have a .users attribute that will allow you to get all the users associated with this order.
+    # CASCADE - fully deleting
+    # Protect - when we deleted user, we can not delete order
+    # Set_null - when we deleted, there will be null in all cells. And add null=true as well
+    # Default - there will be value, which we need to specify as default after deleted. And add default=... as well

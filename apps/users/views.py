@@ -1,4 +1,4 @@
-from rest_framework.generics import ListCreateAPIView, RetrieveUpdateDestroyAPIView
+from rest_framework.generics import ListAPIView, RetrieveUpdateDestroyAPIView
 from rest_framework.request import Request
 
 from apps.users.filter import filter_users
@@ -6,7 +6,10 @@ from apps.users.models import UserModel
 from apps.users.serializers import UserSerializer
 
 
-class UserListCreateView(ListCreateAPIView):
+class UserListCreateView(ListAPIView):
+    # after setting relations between users and orders,
+    # we had an error "order can't be null", so instead of ListCreateAPIView we set ListAPIView
+    # because we can't create
     serializer_class = UserSerializer
 
     def get_queryset(self):
