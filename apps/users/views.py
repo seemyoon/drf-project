@@ -11,9 +11,11 @@ class UserListCreateView(ListAPIView):
     # we had an error "order can't be null", so instead of ListCreateAPIView we set ListAPIView
     # because we can't create
     serializer_class = UserSerializer
+    # we set new filter, because we need to set 'page' as well
+    # queryset = UserModel.objects.all()
 
     def get_queryset(self):
-        request: Request = self.request
+        request:Request = self.request
         return filter_users(request.query_params)
 
 
