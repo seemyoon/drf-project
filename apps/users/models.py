@@ -1,5 +1,7 @@
+from django.core import validators as V
 from django.db import models
 
+from core.enum.regex_enum import RegexEnum
 from core.models import BaseModel
 
 from apps.orders.models import OrderModel
@@ -9,16 +11,13 @@ class UserModel(BaseModel): # inherit from BaseModel
     class Meta:  # addition
         db_table = 'users'  # give a name for db
 
-    # id we needn't specify, because it generate automatically with default_auto_field = 'django.db.models.BigAutoField'
-    name = models.CharField(max_length=20)  # CharField as varchar, not recommend more than 255
-    # specify TextField if you want to specify more than 255
-    age = models.IntegerField()
+    name = models.CharField(max_length=20, validators=[V.RegexValidator(RegexEnum.NAME.pattern, RegexEnum.NAME.msg)]) # validation via regex
+    # name = models.CharField(max_length=20) # serializer looks first at max_length=20 and then for manual configuration
+    # name = models.CharField(max_length=20, blank=True) # serializer looks first at max_length=20 and then for manual configuration.
+    # blank=True is mean, we can ignore field name, it works only with str data type
+    age = models.IntegerField(validators=[V.MinValueValidator(1), V.MaxValueValidator(150)]) # configurations via validators. MinValue - for numbers, MinLength - for strings
+    # age = models.IntegerField(default=5) # we can set default value.
+    # age = models.IntegerField(null=True) # we can set null, but not recommended
     status = models.BooleanField(default=False)
     weight = models.FloatField()
     orders =models.ForeignKey(OrderModel, on_delete=models.CASCADE, related_name='users')
-    # ForeignKey - This means that the current model will have a many-to-one relationship with OrderModel.
-    # related_name='users' - This means that OrderModel will have a .users attribute that will allow you to get all the users associated with this order.
-    # CASCADE - fully deleting
-    # Protect - when we deleted user, we can not delete order
-    # Set_null - when we deleted, there will be null in all cells. And add null=true as well
-    # Default - there will be value, which we need to specify as default after deleted. And add default=... as well

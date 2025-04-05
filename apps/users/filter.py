@@ -17,6 +17,6 @@ def filter_users(query: QueryDict) -> QuerySet:
             case 'age__lt':
                 qs = qs.filter(age__lt=v)
             case _:
-                raise ValidationError(f'{k} not allowed')
+                raise ValidationError({'detail': f'{k} not allowed'})
 
     return qs
