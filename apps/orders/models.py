@@ -15,8 +15,10 @@ class DaysChoices(models.TextChoices):
 class OrderModel(models.Model):
     class Meta:
         db_table = 'orders'
+        ordering = ('-id',) # it will be sort automatically by id
 
     total_price = models.FloatField()
+    quantity_of_products = models.IntegerField()
     status = models.BooleanField()
     comment = models.CharField(max_length=50)
     day = models.CharField(max_length=9,

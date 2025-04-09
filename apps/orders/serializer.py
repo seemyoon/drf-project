@@ -13,7 +13,7 @@ class OrderSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = OrderModel
-        fields = ('id', 'status', 'total_price', 'day', 'comment', 'users')
+        fields = ('id', 'status', 'total_price', 'day', 'comment', 'quantity_of_products','users')
         # depth = 1  # depth of inner values
 
     def validate_price(self, total_price):
