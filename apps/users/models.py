@@ -5,6 +5,7 @@ from core.enum.regex_enum import RegexEnum
 from core.models import BaseModel
 
 from apps.orders.models import OrderModel
+from apps.users.managers import UserManager
 
 
 class UserModel(BaseModel): # inherit from BaseModel
@@ -21,3 +22,5 @@ class UserModel(BaseModel): # inherit from BaseModel
     status = models.BooleanField(default=False)
     weight = models.FloatField()
     orders =models.ForeignKey(OrderModel, on_delete=models.CASCADE, related_name='users')
+
+    objects = UserManager()
