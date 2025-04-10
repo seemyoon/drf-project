@@ -8,7 +8,7 @@ from apps.pizzas.serializer import PizzaSerializer
 class PizzaListCreateView(ListAPIView):
     serializer_class = PizzaSerializer
     queryset = PizzaModel.objects.all()
-    filterer_clas = PizzaFilter
+    filterset_class = PizzaFilter
 
 
 class PizzaRetrieveUpdateDestroyView(RetrieveUpdateDestroyAPIView):
