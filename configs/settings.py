@@ -18,7 +18,7 @@ SECRET_KEY =os.environ.get('SECRET_KEY')
 DEBUG = os.environ.get('DEBUG') == 'True'
 
 ALLOWED_HOSTS = []
-
+AUTH_USER_MODEL = 'user.UserModel' # set dir, where is located userModel
 # Application definition
 
 INSTALLED_APPS = [
@@ -28,6 +28,7 @@ INSTALLED_APPS = [
     'django_filters',
 
     'core',
+    'apps.user',
     'apps.pizzas',
     'apps.pizza_shop'
 ]
