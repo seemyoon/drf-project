@@ -52,43 +52,9 @@ class UserSerializer(serializers.ModelSerializer):
             }
         }
 
-    #     If you just send data like this:
-    # {
-    #     "email": "alex@gmail.com",
-    #     "password": "123456",
-    #     "profile": {
-    #         "name": "Alex",
-    #         "age": 25
-    #     }
-    # }
-    # Django doesn't know what to do with "profile" because UserModel.objects.create_user() can only create a user, not a nested profile.
     def create(self, validated_data: dict):  # we describe how we will create our user
         profile = validated_data.pop(
             'profile')  # takes data for the profile (otherwise create_user won't understand what to do with it).
         user = UserModel.objects.create_user(**validated_data)  # create user without profile
         ProfileModel.objects.create(**profile, user=user)
         return user
-
-
-class UserIsActiveSerializer(serializers.ModelSerializer):
-    is_active = serializers.BooleanField(required=True)
-
-    # ModelSerializer ignores unknown fields by default unless you explicitly disable this behavior.
-    class Meta:
-        model = UserModel
-        fields = ('is_active',)
-
-    # Now when making a request, all other fields ("asd", "email", etc.) are simply ignored.
-    # {
-    # "asd":132,
-    # "is_active": false,
-    # "email": "kristin@gmail.com"
-    # }
-
-
-class UserIsStaffSerializer(serializers.ModelSerializer):
-    is_staff = serializers.BooleanField(required=True)
-
-    class Meta:
-        model = UserModel
-        fields = ('is_staff',)
