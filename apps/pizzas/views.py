@@ -15,7 +15,8 @@ class PizzaListCreateView(ListAPIView):
     filterset_class = PizzaFilter
     # permission_classes = IsAuthenticated # it means user must be registered at least
     # permission_classes = (IsAuthenticated, ) # we can do it via list or tuple
-
+    # when we specified     'DEFAULT_PERMISSION_CLASSES': [
+    #         'rest_framework.permissions.IsAdminUser', in rest_conf, we needn't indicate IsAuthenticated
 
 class PizzaRetrieveUpdateDestroyView(RetrieveUpdateDestroyAPIView):
     serializer_class = PizzaSerializer

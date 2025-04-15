@@ -48,7 +48,7 @@ class UserSerializer(serializers.ModelSerializer):
                             )  # fields, which can not modify
         extra_kwargs = {
             'password': {
-                'write_only': True # we can only write down the password, but not read it
+                'write_only': True  # we can only write down the password, but not read it
             }
         }
 
@@ -68,3 +68,27 @@ class UserSerializer(serializers.ModelSerializer):
         user = UserModel.objects.create_user(**validated_data)  # create user without profile
         ProfileModel.objects.create(**profile, user=user)
         return user
+
+
+class UserIsActiveSerializer(serializers.ModelSerializer):
+    is_active = serializers.BooleanField(required=True)
+
+    # ModelSerializer ignores unknown fields by default unless you explicitly disable this behavior.
+    class Meta:
+        model = UserModel
+        fields = ('is_active',)
+
+    # Now when making a request, all other fields ("asd", "email", etc.) are simply ignored.
+    # {
+    # "asd":132,
+    # "is_active": false,
+    # "email": "kristin@gmail.com"
+    # }
+
+
+class UserIsStaffSerializer(serializers.ModelSerializer):
+    is_staff = serializers.BooleanField(required=True)
+
+    class Meta:
+        model = UserModel
+        fields = ('is_staff',)
