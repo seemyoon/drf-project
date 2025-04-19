@@ -20,7 +20,7 @@ INSTALLED_APPS = [
     'rest_framework_simplejwt.token_blacklist', # add to work with auth-on. without token_blacklist we will have an error.
 
     'core',
-    'apps.user',          
+    'apps.user',
     'apps.auth',
     # if we have conflicts, like: django.core.exceptions.ImproperlyConfigured: Application labels aren't unique, duplicates: auth...
     # it means we have this auth in django (named auth_user)
