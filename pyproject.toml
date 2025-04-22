@@ -11,6 +11,7 @@ djangorestframework = ">=3.16.0,<4.0.0"
 mysqlclient = ">=2.2.7,<3.0.0"
 django-filter = ">=25.1,<26.0"
 djangorestframework-simplejwt = ">=5.5.0,<6.0.0"
+pillow = "^11.2.1"
 
 [tool.poetry.group.dev.dependencies]
 isort = "^6.0.1"

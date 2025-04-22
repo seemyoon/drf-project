@@ -5,19 +5,20 @@ from .extra_conf import *
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-SECRET_KEY =os.environ.get('SECRET_KEY')
+SECRET_KEY = os.environ.get('SECRET_KEY')
 
 DEBUG = os.environ.get('DEBUG') == 'True'
 
 ALLOWED_HOSTS = []
-AUTH_USER_MODEL = 'user.UserModel' # set dir, where is located userModel
+AUTH_USER_MODEL = 'user.UserModel'  # set dir, where is located userModel
 
 INSTALLED_APPS = [
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.staticfiles',
     'django_filters',
-    'rest_framework_simplejwt.token_blacklist', # add to work with auth-on. without token_blacklist we will have an error.
+    'rest_framework_simplejwt.token_blacklist',
+    # add to work with auth-on. without token_blacklist we will have an error.
 
     'core',
     'apps.user',
@@ -40,7 +41,7 @@ ROOT_URLCONF = 'configs.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [os.path.join(BASE_DIR, 'templates')],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -93,6 +94,9 @@ USE_TZ = True
 
 # Static files (CSS, JavaScript, Images)
 STATIC_URL = 'static/'
+
+MEDIA_ROOT = 'storage/'  # dir, where all files in will be stored
+MEDIA_URL = '/api/media/'  # url, we will follow to find photo
 
 # Default primary key field type
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
