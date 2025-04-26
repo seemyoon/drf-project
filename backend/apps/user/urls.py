@@ -7,5 +7,5 @@ urlpatterns = [
     path('/<int:pk>/unblock', UnBlockUserView.as_view(), name='user_unblock'),
     path('/<int:pk>/block', BlockUserView.as_view(), name='user_block'),
     path('/<int:pk>/to_admin', UserUpdateIsStaffView.as_view(), name='user_to_admin'),
-    path('/test', SendEmailTestView, name='send_email_test')
+    path('/test', SendEmailTestView.as_view(), name='send_email_test')
     ]

@@ -17,6 +17,7 @@ UserModel = get_user_model()
 class UserListCreateView(ListCreateAPIView):
     queryset = UserModel.objects.all()  # we can not refer the user model as we did with other models (because of troubles with django)
     serializer_class = UserSerializer
+    permission_classes = (AllowAny,)
 
 
 class BlockUserView(GenericAPIView):

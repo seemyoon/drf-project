@@ -17,8 +17,11 @@ INSTALLED_APPS = [
     'django.contrib.contenttypes',
     'django.contrib.staticfiles',
     'django_filters',
+    'rest_framework_simplejwt',
     'rest_framework_simplejwt.token_blacklist',
     # add to work with auth-on. without token_blacklist we will have an error.
+    # token_blacklist_blacklistedtoken - what is the token and when this token was blocked by
+    # token_blacklist_outstandingtoken - here we store tokens
 
     'core',
     'apps.user',

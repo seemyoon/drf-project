@@ -13,8 +13,8 @@ class UserModel(AbstractBaseUser, PermissionsMixin, BaseModel):  # PermissionsMi
         ordering = ['-id']
 
     email = models.EmailField(unique=True)  # EmailField validator for email
-    is_active = models.BooleanField(default=True)  # can user login or not
-
+    is_active = models.BooleanField(default=False)  # can user login or not
+    # specified False, because we will activate via email
     is_staff = models.BooleanField(default=False)  # user admin or no?
 
     USERNAME_FIELD = 'email'  # login field was assigned email
