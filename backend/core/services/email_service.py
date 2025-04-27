@@ -3,18 +3,18 @@ import os
 from django.core.mail import EmailMultiAlternatives
 from django.template.loader import get_template
 
-from core.services.jwt_service import ActionToken, ActivateToken, JWTService
+from core.services.jwt_service import ActivateToken, JWTService
 
 
 class EmailService:
     @classmethod  # Make a class method (cls instead of self) so that you can call the method without creating an object of this class.
-    def __send_email(cls, to: str, tempalate_name: str, context: dict, subject: str) -> None:
+    def __send_email(cls, to: str, template_name: str, context: dict, subject: str) -> None:
         # to: who to send the email to
-        # tempalate_name: path to HTML template
+        # template_name: path to HTML template
         # context: data to substitute into template
         # subject: email subject
 
-        template = get_template(tempalate_name)
+        template = get_template(template_name)
         html_content = template.render(context)
         msg = EmailMultiAlternatives(
             to=[to],
@@ -31,7 +31,18 @@ class EmailService:
         url = f'http://localhost/activate/{token}'
         cls.__send_email(
             to=user.email,
-            tempalate_name='register.html',
+            template_name='register.html',
             context={'name': user.profile.name, 'url': url},
             subject='Register'
+        )
+
+    @classmethod
+    def forgot_password(cls, user):
+        token = JWTService.create_token(user, ActivateToken)
+        url = f'http://localhost/activate/{token}'
+        cls.__send_email(
+            to=user.email,
+            template_name='recover_password.html',
+            context={'name': user.profile.name, 'url': url},
+            subject='Forgot password'
         )

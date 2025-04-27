@@ -9,6 +9,9 @@ from rest_framework.generics import GenericAPIView, ListCreateAPIView
 from rest_framework.permissions import AllowAny
 from rest_framework.response import Response
 
+from core.exceptions.user_exception import UserException
+from core.services.email_service import EmailService
+
 from apps.user.serializers import UserSerializer
 
 UserModel = get_user_model()
@@ -25,7 +28,7 @@ class BlockUserView(GenericAPIView):
         return UserModel.objects.all().exclude(id=self.request.user.id)
 
     # The get_queryset method is needed to exclude the current user from the selection.
-    #
+
     # Without it, self.get_object() could return itself.
     # With it, you can't block yourself.
     def patch(self, *args, **kwargs):
@@ -64,6 +67,23 @@ class UserUpdateIsStaffView(GenericAPIView):
 
         serializer = UserSerializer(user)
         return Response(serializer.data, status.HTTP_200_OK)
+
+
+class SendEmailToRecoverPassword(GenericAPIView):
+    permission_classes = (AllowAny,)
+
+    def post(self, *args, **kwargs):
+        email = self.request.data['email']
+        if not email:
+            return Response({"error": 'email is required'}, status.HTTP_400_BAD_REQUEST)
+
+        try:
+            user = UserModel.objects.get(email=email)
+        except Exception:
+            raise UserException
+
+        EmailService.forgot_password(user)
+        return Response({'message': 'Email was sent'}, status.HTTP_200_OK)
 
 
 class SendEmailTestView(GenericAPIView):

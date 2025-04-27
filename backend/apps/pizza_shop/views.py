@@ -20,7 +20,7 @@ class PizzaShopAddPizzaView(GenericAPIView):
     def post(self, *args,
              **kwargs):  # This is the method for handling the POST request. We will get the data for the new pizza and add it to the database.
         pizza_shop = self.get_object()  # we get a specific order shop from the queryset by id from the URL.
-        data = self.request.data  # This extracts the data from the body of the POST request..
+        data = self.request.data  # This extracts the data from the body of the POST request.
         serializer = PizzaSerializer(data=data)
         serializer.is_valid(raise_exception=True)
         serializer.save(pizza_shop=pizza_shop)  # we create a pizza and link it to a pizza shop.
