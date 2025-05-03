@@ -12,6 +12,8 @@ REST_FRAMEWORK = {
     'DEFAULT_PERMISSION_CLASSES': [
         'rest_framework.permissions.IsAdminUser',
         # take from rest_framework.permissions import IsAdminUser, IsAuthenticated, IsAuthenticatedOrReadOnly in pizza app we set it
-    ]  # IsAdminUser is the higher permission. then we chan on super-admin
+    ],  # IsAdminUser is the higher permission. then we chan on super-admin
     # and even we didn't set 'permission class' in pizza - for default admin have permission to move this endpoint (getPizza for instance)
+    'EXCEPTION_HANDLER': 'core.handlers.error_handler.error_handler' # 1 error_handler is file and 2 is function
+
 }
