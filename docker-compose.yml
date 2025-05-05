@@ -40,3 +40,16 @@ services:
 
   redis:
     image: redis:alpine
+
+  celery: # the same settings
+    build:
+      context: .
+    volumes:
+      - ./backend:/app
+    env_file:
+      - .env
+    restart: on-failure
+    command: >
+      sh -c "celery -A configs worker -l info -B"
+#      flag -B set up celery_beat
+#      sh -c "celery -A configs worker -l info"

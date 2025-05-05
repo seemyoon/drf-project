@@ -22,6 +22,8 @@ INSTALLED_APPS = [
     # add to work with auth-on. without token_blacklist we will have an error.
     # token_blacklist_blacklistedtoken - what is the token and when this token was blocked by
     # token_blacklist_outstandingtoken - here we store tokens
+    'django_celery_beat',
+    'django_celery_results',
 
     'core',
     'apps.user',
