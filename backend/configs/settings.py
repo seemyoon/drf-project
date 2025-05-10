@@ -13,6 +13,7 @@ ALLOWED_HOSTS = []
 AUTH_USER_MODEL = 'user.UserModel'  # set dir, where is located userModel
 
 INSTALLED_APPS = [
+    'daphne', # !important. daphne must be first
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.staticfiles',
@@ -60,6 +61,7 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = 'configs.wsgi.application'
+ASGI_APPLICATION = 'configs.asgi.application'
 
 DATABASES = {
     'default': {

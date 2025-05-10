@@ -13,6 +13,11 @@ class ActionTokenEnum(Enum):
         timedelta(minutes=10)
     )
 
+    SOCKET = (
+        'socket',
+        timedelta(seconds=10) # it sufficiently to get response from BE and do request for connection token
+    )
+
     def __init__(self, token_type, lifetime):
         self.token_type = token_type
         self.lifetime = lifetime
