@@ -17,7 +17,8 @@ class AuthSocketMiddleWare(BaseMiddleware):
         # scope === request in regular http
         # scope return dict. this dict have query_string, like - b'token234ohiu256dasd' and we need to catch it (token)
         # b - binary data, and we need to decode it:
-        token = dict([item.split('=') for item in scope['query_string'].decode('utf-8').split('&') if item]).get('token', None)
+        token = dict([item.split('=') for item in scope['query_string'].decode('utf-8').split('&') if item]).get(
+            'token', None)
         # query_string === param
         # '.split('&')' - we might have a few param
         # '&' - to separate every param 9 (query_string)
@@ -30,5 +31,5 @@ class AuthSocketMiddleWare(BaseMiddleware):
         # sockets work on async/await, and django - asynchronously, and therefore in order to access django we need to make these methods asynchronous.
         # and therefore we need to interpretative from synchronous variants to asynchronous
 
-        scope['user'] = await get_user(token=token) # and here we have new parameter user
+        scope['user'] = await get_user(token=token)  # and here we have new parameter user
         return await super().__call__(scope, receive, send)
