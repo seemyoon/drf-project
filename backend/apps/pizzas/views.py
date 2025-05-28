@@ -1,4 +1,4 @@
-from rest_framework.generics import ListAPIView, RetrieveUpdateDestroyAPIView, UpdateAPIView
+from rest_framework.generics import ListCreateAPIView, RetrieveUpdateDestroyAPIView, UpdateAPIView
 from rest_framework.permissions import AllowAny
 
 from apps.pizzas.filter import PizzaFilter
@@ -10,7 +10,7 @@ from apps.pizzas.serializer import PizzaPhotoSerializer, PizzaSerializer
 # IsAuthenticatedOrReadOnly means unregistered users can read information exactly
 # IsAdminUser is is_staff from db
 
-class PizzaListCreateView(ListAPIView):
+class PizzaListCreateView(ListCreateAPIView):
     serializer_class = PizzaSerializer
     queryset = PizzaModel.objects.all()
     filterset_class = PizzaFilter
