@@ -8,6 +8,7 @@ const socketService = async () => {
 
     return {
         chat: (room) => new w3cwebsocket(`${baseURL}/chat/${room}/?token=${token}`),
+        pizzas: () => new w3cwebsocket(`${baseURL}/pizzas/?token=${token}`)
     }
 }
 

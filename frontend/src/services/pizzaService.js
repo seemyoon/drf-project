@@ -2,10 +2,10 @@ import {apiService} from "./apiService";
 import {urls} from "../constants/url";
 
 const pizzaService = {
-    getAll(){
+    getAll() {
         return apiService.get(urls.pizzas)
     },
-    create(data){
+    create(data) {
         return apiService.post(urls.pizzas, data)
     }
 }

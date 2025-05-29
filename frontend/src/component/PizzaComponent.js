@@ -1,7 +1,7 @@
 const PizzaComponent = ({pizza}) => {
     return (
         <div>
-            {JSON.stringify(pizza)}
+            <div>{JSON.stringify(pizza)}</div>
         </div>
     );
 };

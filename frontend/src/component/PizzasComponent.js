@@ -7,7 +7,10 @@ const PizzasComponent = () => {
 
 
     useEffect(() => {
-        pizzaService.getAll().then((data) => setPizzas(data.data)) // data, because we set data in pagination
+        pizzaService.getAll().then((data) => {
+            setPizzas(data.data.data);
+        })
+        // data, because we set data in pagination
     }, [])
     return (
         <div>
